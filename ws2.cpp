@@ -13,9 +13,10 @@ using namespace std;
 // There are two errors in this first block
 void PartB() {
     int *arrayPtr = new int[700];
-    for (int i = 0; i <= 700; i++) {
+    for (int i = 0; i < 700; i++) {
         arrayPtr[i] = i;
     }
+    delete [] arrayPtr;
 }
 
 // Look in arrayExamples.cpp createCharPointer
@@ -23,10 +24,11 @@ void PartB() {
 // There is only one actual error in here, but it causes
 // valgrind to detect two issues.
 void PartC() {
-    int len = strlen("Hello");
+    int len = strlen("Hello ");
     char *a = new char[len];
     strcpy(a, "Hello");
-    cout << a << endl;
+    cout << *a << endl;
+    delete [] a;
 }
 
 
@@ -36,6 +38,7 @@ void PartD() {
     int *ptr2 = new int [10];
     for (int i = 0; i < 10; i++) {
         ptr1[i] = i;
+        ptr2[i] = i;
     }
     // These prints are here to help you. We do not want to change
     // where ptr2 is pointing, we want to change the contents of the array.
@@ -44,30 +47,33 @@ void PartD() {
     // contents of the array in ptr1 into the array in ptr2.
     // They wanted two separate arrays each with the same values.
     // Fix it so that is what we have.
-    ptr2 = ptr1;
     cout << "ptr2 is pointing at: " << ptr2 << endl;
-    if (ptr2[3] == 3) {
+    if (ptr1[3] == 3) {
         cout << "passed" << endl;
     }
     else {
         cout << "failed" << endl;
     }
     delete [] ptr1;
-    //delete [] ptr2;
+    delete [] ptr2;
 }
 // In this case, we do want the two pointers to point to the same
 // array. But, we still messed something up. line 66 is a problem. Why?
 void PartE() {
     int *ptr1 = new int [10];
-    int *ptr2 = ptr1;
+    int *ptr2 = new int [10];
     for (int i = 0; i < 10; i++) {
         ptr1[i] = i;
+    }
+    for (int i = 0; i < 10; i++){
+      ptr2[i] = ptr1[i];
     }
     delete [] ptr1;
     ptr1 = nullptr;
     for (int i = 0; i < 10; i++) {
         cout << ptr2[i]  << endl;
     }
+  delete [] ptr2;
 }
 
 int main() {
